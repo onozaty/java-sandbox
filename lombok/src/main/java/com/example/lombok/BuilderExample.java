@@ -1,7 +1,7 @@
 package com.example.lombok;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.ToString;
 
 public class BuilderExample {
 
@@ -22,8 +22,8 @@ public class BuilderExample {
     }
 }
 
-@Data
 @Builder
+@ToString
 class Customer {
 
     private String firstName;
