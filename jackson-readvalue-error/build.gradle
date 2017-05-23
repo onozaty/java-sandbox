@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+repositories { jcenter() }
+
+dependencies {
+
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.7'
+    compileOnly 'org.projectlombok:lombok:1.16.16'
+    
+    testCompile 'junit:junit:4.12'
+}
