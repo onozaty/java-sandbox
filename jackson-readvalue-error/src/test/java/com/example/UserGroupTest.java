@@ -17,38 +17,51 @@ import lombok.NoArgsConstructor;
 
 public class UserGroupTest {
 
-    @Test
-    public void test() throws IOException {
+  @Test
+  public void test1() throws IOException {
 
-        ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper();
 
-        UserGroup userGroupBefore = new UserGroup("group1", Arrays.asList(new User(1, "Taro", null)));
+    User userBefore = new User(1, "Taro", null);
 
-        String json = mapper.writeValueAsString(userGroupBefore);
-        UserGroup userGroupAfter = mapper.readValue(json, UserGroup.class);
+    String json = mapper.writeValueAsString(userBefore);
+    User userAfter = mapper.readValue(json, User.class);
 
-        assertEquals(userGroupBefore, userGroupAfter);
-    }
+    assertEquals(userBefore, userAfter);
+  }
 
-    @Data
-    @AllArgsConstructor
-    public static class UserGroup {
+  @Test
+  public void test2() throws IOException {
 
-        private String name;
+    ObjectMapper mapper = new ObjectMapper();
 
-        private List<User> users;
-    }
+    UserGroup userGroupBefore = new UserGroup("group1", Arrays.asList(new User(1, "Taro", null)));
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class User {
+    String json = mapper.writeValueAsString(userGroupBefore);
+    UserGroup userGroupAfter = mapper.readValue(json, UserGroup.class);
 
-        private int id;
+    assertEquals(userGroupBefore, userGroupAfter);
+  }
 
-        private String name;
+  @Data
+  @AllArgsConstructor
+  public static class UserGroup {
 
-        @JsonIgnore
-        private String password;
-    }
+    private String name;
+
+    private List<User> users;
+  }
+
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class User {
+
+    private int id;
+
+    private String name;
+
+    @JsonIgnore
+    private String password;
+  }
 }
