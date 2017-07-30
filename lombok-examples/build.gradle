@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+repositories { jcenter() }
+
+dependencies {
+  compile 'org.slf4j:slf4j-api:1.7.25'
+  compile 'org.projectlombok:lombok:1.16.18'
+}
+
+task delombok {
+  description 'Delomboks the source code'
+  ant.taskdef(classname: 'lombok.delombok.ant.Tasks$Delombok', classpath: configurations.compile.asPath, name: 'delombok')
+  ant.mkdir(dir: 'build/src-delomboked')
+  ant.delombok(verbose: 'true', encoding: 'UTF-8', to: 'build/src-delomboked', from: 'src/main/java')
+}
