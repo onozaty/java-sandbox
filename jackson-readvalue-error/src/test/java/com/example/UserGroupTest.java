@@ -15,6 +15,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Jackson 2.8.7で発生するエラーの検証コードです。
+ * 
+ */
 public class UserGroupTest {
 
   @Test
@@ -43,6 +47,21 @@ public class UserGroupTest {
     assertEquals(userGroupBefore, userGroupAfter);
   }
 
+  @Test
+  public void test3() throws IOException {
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    User2 userBefore = new User2(1, "Taro", null);
+
+    String json = mapper.writeValueAsString(userBefore);
+
+    // 引数無しコンストラクタを使わせればエラーとならない
+    User2 userAfter = mapper.readValue(json, User2.class);
+
+    assertEquals(userBefore, userAfter);
+  }
+
   @Data
   @AllArgsConstructor
   public static class UserGroup {
@@ -56,6 +75,19 @@ public class UserGroupTest {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class User {
+
+    private int id;
+
+    private String name;
+
+    @JsonIgnore
+    private String password;
+  }
+
+  @Data
+  @AllArgsConstructor(onConstructor = @__(@JsonIgnore))
+  @NoArgsConstructor
+  public static class User2 {
 
     private int id;
 
