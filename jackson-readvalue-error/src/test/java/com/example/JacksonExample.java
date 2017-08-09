@@ -3,8 +3,6 @@ package com.example;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -19,36 +17,21 @@ import lombok.NoArgsConstructor;
  * Jackson 2.8.7で発生するエラーの検証コードです。
  * 
  */
-public class UserGroupTest {
+public class JacksonExample {
 
   @Test
   public void test1() throws IOException {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    User userBefore = new User(1, "Taro", null);
+    User userBefore = new User(1, "Taro", "password");
 
     String json = mapper.writeValueAsString(userBefore);
     User userAfter = mapper.readValue(json, User.class);
-
-    assertEquals(userBefore, userAfter);
   }
 
   @Test
   public void test2() throws IOException {
-
-    ObjectMapper mapper = new ObjectMapper();
-
-    UserGroup userGroupBefore = new UserGroup("group1", Arrays.asList(new User(1, "Taro", null)));
-
-    String json = mapper.writeValueAsString(userGroupBefore);
-    UserGroup userGroupAfter = mapper.readValue(json, UserGroup.class);
-
-    assertEquals(userGroupBefore, userGroupAfter);
-  }
-
-  @Test
-  public void test3() throws IOException {
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -60,15 +43,6 @@ public class UserGroupTest {
     User2 userAfter = mapper.readValue(json, User2.class);
 
     assertEquals(userBefore, userAfter);
-  }
-
-  @Data
-  @AllArgsConstructor
-  public static class UserGroup {
-
-    private String name;
-
-    private List<User> users;
   }
 
   @Data
