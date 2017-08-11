@@ -21,3 +21,4 @@
 
 * [New Feature of Java SE 7](https://www.slideshare.net/OracleMiddleJP/new-feature-of-java-se-7 "New Feature of Java SE 7") 寺田さんの資料
 * [Java新機能メモ(Hishidama's Java up-to-date)](http://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html "Java新機能メモ(Hishidama's Java up-to-date)")
+* [Java SE 7の機能と拡張機能](http://www.oracle.com/technetwork/jp/java/javase/jdk7-relnotes-418459-ja.html "Java SE 7の機能と拡張機能")
