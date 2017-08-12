@@ -39,7 +39,7 @@ public class TryWithResourcesExample {
 
     Path outputFilePath = Paths.get(outputFileName);
 
-    // 2つ以上のリソースを対象とする場合はカンマで
+    // 2つ以上のリソースを対象とする場合はセミコロン区切りで
     try (
         ZipFile zipFile = new ZipFile(zipFileName);
         BufferedWriter writer = Files.newBufferedWriter(outputFilePath)) {
