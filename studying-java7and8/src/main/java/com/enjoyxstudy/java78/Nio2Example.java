@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Nio2Example {
@@ -96,5 +97,15 @@ public class Nio2Example {
     } finally {
       inputStream.close();
     }
+  }
+
+  // Path操作
+
+  public void path() {
+
+    Path currentPath = Paths.get("/home/user1");
+    
+    System.out.println(currentPath.getParent()); // -> /home
+    System.out.println(currentPath.resolve("1.txt")); // -> /home/user1/1.txt
   }
 }

@@ -1,4 +1,4 @@
-# try-with-resources
+# try-with-resources - Java7
 
 try文で指定したリソースを、ブロックを抜けた際にクローズする。ブロックとリソースがセットになるので、コードがわかりやすくなる。
 
