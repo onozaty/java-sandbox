@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+
+    testCompile 'junit:junit:4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+}
