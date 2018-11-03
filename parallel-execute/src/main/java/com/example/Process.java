@@ -55,7 +55,6 @@ public class Process {
         System.out.println("[executeWithCountDownLatch] end");
     }
 
-    @SneakyThrows
     private void task1() {
         System.out.println("[task1] start");
 
@@ -64,7 +63,6 @@ public class Process {
         System.out.println("[task1] end");
     }
 
-    @SneakyThrows
     private void task2() {
         System.out.println("[task2] start");
 
