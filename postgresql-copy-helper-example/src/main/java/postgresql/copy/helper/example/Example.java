@@ -26,11 +26,11 @@ public class Example {
 
         try (BaseConnection connection = getConnection()) {
 
-            createTable(connection);
-
             List<Item> items = generateItems(100000);
 
             {
+                createTable(connection);
+
                 long startTime = System.currentTimeMillis();
 
                 System.out.println("[insert] Start");
@@ -43,6 +43,8 @@ public class Example {
                                 System.currentTimeMillis() - startTime));
             }
             {
+                createTable(connection);
+
                 long startTime = System.currentTimeMillis();
 
                 System.out.println("[insert batch] Start");
@@ -55,6 +57,8 @@ public class Example {
                                 System.currentTimeMillis() - startTime));
             }
             {
+                createTable(connection);
+
                 long startTime = System.currentTimeMillis();
 
                 System.out.println("[insert copy] Start");
