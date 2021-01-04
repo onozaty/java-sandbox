@@ -1,4 +1,4 @@
-package com.github.onozaty.sandwich;
+package com.github.onozaty.puzzle;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,8 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import com.github.onozaty.sandwich.SandwichSameNumber;
-import com.github.onozaty.sandwich.SandwichSameNumber.Board;
+import com.github.onozaty.puzzle.SandwichSameNumber;
+import com.github.onozaty.puzzle.SandwichSameNumber.Board;
 
 public class SandwichSameNumberTest {
 

@@ -1,4 +1,4 @@
-package com.github.onozaty.sandwich;
+package com.github.onozaty.puzzle;
 
 import java.util.Arrays;
 import java.util.List;
