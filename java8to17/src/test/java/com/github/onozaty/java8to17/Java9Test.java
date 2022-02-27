@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
 public class Java9Test {
@@ -65,13 +64,19 @@ public class Java9Test {
 
             // Map
             Map<Integer, String> map1 = Map.of(1, "a", 2, "b", 3, "c");
-            assertThat(map1).containsExactly(
-                    MapEntry.entry(1, "a"), MapEntry.entry(2, "b"), MapEntry.entry(3, "c"));
+            assertThat(map1)
+                    .hasSize(3)
+                    .containsEntry(1, "a")
+                    .containsEntry(2, "b")
+                    .containsEntry(3, "c");
 
             // Map#ofEntries を使った方が、キーと値のセットがわかりやすい
             Map<Integer, String> map2 = Map.ofEntries(Map.entry(1, "a"), Map.entry(2, "b"), Map.entry(3, "c"));
-            assertThat(map2).containsExactly(
-                    MapEntry.entry(1, "a"), MapEntry.entry(2, "b"), MapEntry.entry(3, "c"));
+            assertThat(map2)
+                    .hasSize(3)
+                    .containsEntry(1, "a")
+                    .containsEntry(2, "b")
+                    .containsEntry(3, "c");
         }
     }
 
