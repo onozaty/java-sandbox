@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.assertj.core.data.MapEntry;
 import org.junit.Test;
@@ -59,7 +61,7 @@ public class Java9Test {
 
             // Set
             Set<String> set = Set.of("a", "b", "c");
-            assertThat(set).containsExactly("a", "b", "c");
+            assertThat(set).containsExactlyInAnyOrder("a", "b", "c");
 
             // Map
             Map<Integer, String> map1 = Map.of(1, "a", 2, "b", 3, "c");
@@ -116,4 +118,38 @@ public class Java9Test {
         }
     }
 
+    @Test
+    public void stream() {
+
+        {
+            // 2の乗数で100以下のものを求める
+            int[] results = IntStream.iterate(2, x -> x * 2)
+                    .takeWhile(x -> x <= 100)
+                    .toArray();
+
+            assertThat(results)
+                    .containsExactly(2, 4, 8, 16, 32, 64);
+        }
+
+        {
+            // 2の乗数で100以上、1000以下のものを求める
+            int[] results = IntStream.iterate(2, x -> x * 2)
+                    .dropWhile(x -> x < 100)
+                    .takeWhile(x -> x <= 1000)
+                    .toArray();
+
+            assertThat(results)
+                    .containsExactly(128, 256, 512);
+        }
+
+        {
+            long count = Stream.ofNullable("a").count();
+            assertThat(count).isEqualTo(1);
+        }
+
+        {
+            long count = Stream.ofNullable(null).count();
+            assertThat(count).isEqualTo(0);
+        }
+    }
 }

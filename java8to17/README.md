@@ -5,8 +5,8 @@
 
 ### ★ JEP 269: Convenience Factory Methods for Collections
 
-コレクションクラスのファクトリメソッドが追加。  
-全てイミュータブル(追加/削除/変更不可)なコレクションになる。
+コレクションクラスのファクトリメソッドが追加されました。  
+全てイミュータブル(追加/削除/変更不可)なコレクションになります。
 
 ```java
 // List
@@ -21,7 +21,7 @@ Map<Integer, String> map1 = Map.of(1, "a", 2, "b", 3, "c");
 Map<Integer, String> map2 = Map.ofEntries(Map.entry(1, "a"), Map.entry(2, "b"), Map.entry(3, "c"));
 ```
 
-Java9より前は下記のようなコードを書いた。
+Java9より前は下記のようなコードを書く必要がありました。
 
 ```java
 // List
@@ -50,9 +50,9 @@ map.put(3, "c");
 map = Collections.unmodifiableMap(map);
 ```
 
-### ▲ Optionalクラスの拡張
+### ▲ Optionalクラスの改善
 
-`ifPresent` は値があったときのみ実行されたが、値が無かった時のアクションも同時に実行できる`ifPresentOrElse`が追加された。
+`ifPresent` は値があったときのみ実行されましたが、値が無かった時のアクションも同時に実行できる`ifPresentOrElse`が追加されました。  
 
 ```java
 AtomicInteger hasValueCounter = new AtomicInteger();
@@ -68,9 +68,9 @@ assertThat(hasValueCounter.get()).isEqualTo(0);
 assertThat(emptyValueCounter.get()).isEqualTo(1);
 ```
 
-`orElse`と似たようなものとして、`or`が追加された。  
-`or` は`Optional`を返す`Supplier`を指定する。  
-`Optional`のままデフォルト値で補完するようなときに使えるのかもしれない。
+`orElse`と似たようなものとして、`or`が追加されました。  
+`or` は`Optional`を返す`Supplier`を指定します。  
+`Optional`のままデフォルト値で補完するようなときに使えるのかもしれません。
 
 ```java
 Optional<String> value = Optional.empty();
@@ -82,8 +82,8 @@ assertThat(result.get()).isEqualTo("");
 assertThat(value.orElse("")).isEqualTo("");
 ```
 
-`stream`メソッドで`Stream`に変換できるようになった。  
-値がある場合、値が一つ格納された`Stream`、値が無い場合、空の`Stream`になる。
+`stream`メソッドで`Stream`に変換できるようになりました。  
+値がある場合、値が一つ格納された`Stream`、値が無い場合、空の`Stream`になります。
 
 ```java
 Optional<String> value = Optional.of("a");
@@ -99,7 +99,48 @@ long count = value.stream().count();
 assertThat(count).isEqualTo(0);
 ```
 
+### ▲ Stream APIの改善
+
+`takeWhile` で指定した条件を満たす間のデータを対象とします。
+
+```java
+// 2の乗数で100以下のものを求める
+int[] results = IntStream.iterate(2, x -> x * 2)
+        .takeWhile(x -> x <= 100)
+        .toArray();
+
+assertThat(results)
+        .containsExactly(2, 4, 8, 16, 32, 64);
+```
+
+`dropWhile` で指定した条件を満たす間のデータを対象外とします。
+
+```java
+// 2の乗数で100以上、1000以下のものを求める
+int[] results = IntStream.iterate(2, x -> x * 2)
+        .dropWhile(x -> x < 100)
+        .takeWhile(x -> x <= 1000)
+        .toArray();
+
+assertThat(results)
+        .containsExactly(128, 256, 512);
+```
+
+`ofNullable` は、nullの場合は空の`Stream`を、null以外の場合は指定された値を持つ要素数1の`Stream`を返却します。
+
+```java
+long count = Stream.ofNullable("a").count();
+assertThat(count).isEqualTo(1);
+```
+
+```java
+long count = Stream.ofNullable(null).count();
+assertThat(count).isEqualTo(0);
+```
+
+
 ## 参考
 
 * [開発者が喜ぶJDK 9の9つの新機能 - Oracle](https://www.oracle.com/webfolder/technetwork/jp/javamagazine/Java-JA17-Java9Features.pdf)
 * [Java 9~17の新機能 / Java 9 ~ 17 Overview \- Speaker Deck](https://speakerdeck.com/maruta/java-9-17-overview?slide=2)
+* [Javaのスペシャリストが教える、Java9からJava14で細かく変更された機能 \- ログミーTech](https://logmi.jp/tech/articles/323178)
