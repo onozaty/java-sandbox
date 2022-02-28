@@ -186,6 +186,28 @@ var list = List.of("a");
 var result = compute();
 ```
 
+### ▲ List、Set、Mapの変更不可なコピー作成
+
+`List`、`Set`、`Map`に`copyOf`というstaticメソッドが追加され、変更不可な複製が生成できるようになりました。
+
+コピー元が変更不可な場合、複製を作る必要がないので、コピー元のインスタンス自体が返却されます。
+
+```java
+var base = List.of("a", "b", "c");
+
+// baseは変更不可なので、base自体が返される
+var copied = List.copyOf(base);
+assertThat(copied == base).isTrue();
+```
+
+```java
+var base = Arrays.asList("a", "b", "c");
+
+// baseは変更可能なので、変更不可とした複製が返される
+var copied = List.copyOf(base);
+assertThat(copied == base).isFalse();
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
