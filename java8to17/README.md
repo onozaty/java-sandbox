@@ -138,9 +138,33 @@ long count = Stream.ofNullable(null).count();
 assertThat(count).isEqualTo(0);
 ```
 
+### ▲ privateインタフェース・メソッドのサポート
+
+インターフェースでprivateメソッドが定義できるようになりました。
+
+```java
+public interface Hoge {
+
+    private void fuga() {
+    }
+}
+```
+
+privateなので実装クラスからは参照できません。インターフェースのデフォルトメソッドやstaticメソッドからの参照になります。
+
+### ▲ InputStream#readAllBytes の追加
+
+`InputStream`に全てを読み込むメソッドの`readAllBytes`が追加されました。
+
+```java
+byte[] results = inputStream.readAllBytes();
+```
+
+ファイルの場合には、`Files.readAllBytes`がありましたが、それが`InputStream`に対しても同じようなことが出来るようになりました。
 
 ## 参考
 
+* [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
 * [開発者が喜ぶJDK 9の9つの新機能 - Oracle](https://www.oracle.com/webfolder/technetwork/jp/javamagazine/Java-JA17-Java9Features.pdf)
 * [Java 9~17の新機能 / Java 9 ~ 17 Overview \- Speaker Deck](https://speakerdeck.com/maruta/java-9-17-overview?slide=2)
 * [Javaのスペシャリストが教える、Java9からJava14で細かく変更された機能 \- ログミーTech](https://logmi.jp/tech/articles/323178)

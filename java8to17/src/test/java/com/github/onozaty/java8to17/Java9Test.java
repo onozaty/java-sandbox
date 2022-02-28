@@ -2,6 +2,10 @@ package com.github.onozaty.java8to17;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,6 +159,18 @@ public class Java9Test {
         {
             long count = Stream.ofNullable(null).count();
             assertThat(count).isEqualTo(0);
+        }
+    }
+
+    @Test
+    public void inputStream_readAllBytes() throws IOException {
+
+        String text = "a".repeat(1000);
+        try (InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8))) {
+
+            byte[] results = inputStream.readAllBytes();
+
+            assertThat(results).isEqualTo(text.getBytes(StandardCharsets.UTF_8));
         }
     }
 }
