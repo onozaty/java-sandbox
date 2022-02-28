@@ -162,6 +162,30 @@ byte[] results = inputStream.readAllBytes();
 
 ファイルの場合には、`Files.readAllBytes`がありましたが、それが`InputStream`に対しても同じようなことが出来るようになりました。
 
+## Java10
+
+* https://openjdk.java.net/projects/jdk/10/
+
+### ▲ ローカル変数の型推論
+
+`var`という構文が追加され、ローカル変数の場合には`var`で型が省略できるようになりました。
+
+```java
+var num = 1;
+var list = List.of("a");
+```
+
+右辺で型が自明なもの(newしていたりなど)では良いと思いますが、メソッドの戻りの代入などで`var`を使ってしまうと、型がわかりずらくなるので、積極的に使わなくて良いと考えています。
+
+```java
+// 型が自明(右辺でわかる)
+var calculator = new Calculator();
+var list = List.of("a");
+
+// 型がわかりずらくなる
+var result = compute();
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
