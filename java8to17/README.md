@@ -152,7 +152,7 @@ public interface Hoge {
 
 privateなので実装クラスからは参照できません。インターフェースのデフォルトメソッドやstaticメソッドからの参照になります。
 
-### ▲ InputStream#readAllBytes の追加
+### ▲ InputStream#readAllBytes、transferTo の追加
 
 `InputStream`に全てを読み込むメソッドの`readAllBytes`が追加されました。
 
@@ -161,6 +161,12 @@ byte[] results = inputStream.readAllBytes();
 ```
 
 ファイルの場合には、`Files.readAllBytes`がありましたが、それが`InputStream`に対しても同じようなことが出来るようになりました。
+
+また、内容を`OutputStream`に書き込む`transferTo`も追加されました。
+
+```java
+inputStream.transferTo(outputStream);
+```
 
 ## Java10
 

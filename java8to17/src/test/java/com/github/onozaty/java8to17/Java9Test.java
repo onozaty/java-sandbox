@@ -3,6 +3,7 @@ package com.github.onozaty.java8to17;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -171,6 +172,19 @@ public class Java9Test {
             byte[] results = inputStream.readAllBytes();
 
             assertThat(results).isEqualTo(text.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    @Test
+    public void inputStream_transferTo() throws IOException {
+
+        String text = "a".repeat(1000);
+        try (InputStream inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            inputStream.transferTo(outputStream);
+
+            assertThat(outputStream.toByteArray()).isEqualTo(text.getBytes(StandardCharsets.UTF_8));
         }
     }
 }
