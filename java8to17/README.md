@@ -214,6 +214,42 @@ var copied = List.copyOf(base);
 assertThat(copied == base).isFalse();
 ```
 
+## Java11
+
+* https://openjdk.java.net/projects/jdk/11/
+
+### ★ String#repeat の追加
+
+`String#repeat`で文字列を指定回数繰り返した文字列を作成できるようになりました。
+
+```java
+String text = "a".repeat(10);
+assertThat(text).isEqualTo("aaaaaaaaaa");
+```
+
+### ▲ String#strip、stripLeading、stripTrailing の追加
+
+`String#trim`、`trimLeft`、`trimRight` と同じようなものですが、全角スペースなども対象になるところが異なります。
+
+```java
+String text = "\n\u3000 a \u3000\n";
+
+assertThat(text.strip()).isEqualTo("a");
+assertThat(text.stripLeading()).isEqualTo("a \u3000\n");
+assertThat(text.stripTrailing()).isEqualTo("\n\u3000 a");
+
+assertThat(text.trim()).isEqualTo("\u3000 a \u3000"); // 全角スペースは消えない
+```
+
+### ▲ String#isBlank の追加
+
+`String#isBlank` で空白かどうか判定できます。
+
+```java
+assertThat(" ".isBlank()).isTrue();
+assertThat("\n\t\u3000".isBlank()).isTrue();
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
