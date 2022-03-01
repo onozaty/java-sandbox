@@ -31,7 +31,7 @@ list1.add("b");
 list1.add("c");
 list1 = Collections.unmodifiableList(list1);
 
-// Arrays#asList だと、要素の追加/削除はできないが、変更はできてしまう
+// Arrays.asList だと、要素の追加/削除はできないが、変更はできてしまう
 List<String> list2 = Arrays.asList("a", "b", "c");
 list2.set(1, "bb");
 
@@ -249,6 +249,18 @@ assertThat(text.trim()).isEqualTo("\u3000 a \u3000"); // 全角スペースは�
 assertThat(" ".isBlank()).isTrue();
 assertThat("\n\t\u3000".isBlank()).isTrue();
 ```
+
+### ★ Path.of の追加
+
+`Paths.get`だったのが、`Path.of` で書けるようになりました。他の作法と合わせたような感じでしょうか。
+
+```java
+Path path1 = Paths.get("dir");
+Path path2 = Path.of("dir");
+
+assertThat(path2).isEqualTo(path1);
+```
+
 
 ## 参考
 
