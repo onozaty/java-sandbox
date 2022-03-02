@@ -261,6 +261,19 @@ Path path2 = Path.of("dir");
 assertThat(path2).isEqualTo(path1);
 ```
 
+### ★ Files.writeString、readString の追加
+
+`Files.writeString`が追加され、1メソッドで文字の書き込みが行えるようになりました。  
+同様に`readString`で1メソッドで読み込みが行えるようになりました。
+
+```java
+Files.writeString(filePath, "あいうえお", StandardCharsets.UTF_8);
+
+String text = Files.readString(filePath, StandardCharsets.UTF_8);
+
+assertThat(text).isEqualTo("あいうえお");
+```
+
 
 ## 参考
 

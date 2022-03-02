@@ -2,6 +2,9 @@ package com.github.onozaty.java8to17;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -43,6 +46,21 @@ public class Java11Test {
         Path path2 = Path.of("dir");
 
         assertThat(path2).isEqualTo(path1);
+    }
+
+    @Test
+    public void writeString_readString() throws IOException {
+
+        try (TempDirectory tempDirectory = new TempDirectory()) {
+
+            Path filePath = tempDirectory.getPath().resolve("test.txt");
+
+            Files.writeString(filePath, "あいうえお", StandardCharsets.UTF_8);
+
+            String text = Files.readString(filePath, StandardCharsets.UTF_8);
+
+            assertThat(text).isEqualTo("あいうえお");
+        }
     }
 
 }
