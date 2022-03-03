@@ -7,6 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -63,4 +67,41 @@ public class Java11Test {
         }
     }
 
+    @Test
+    public void string_lines() throws IOException {
+
+        String text = "a\nb\r\nc";
+        long lineCount = text.lines().count();
+
+        assertThat(lineCount).isEqualTo(3);
+    }
+
+    @Test
+    public void predicate_not() throws IOException {
+
+        long notEmptyCount = Stream.of("", "x", "", "x", "x")
+                .filter(Predicate.not(String::isEmpty))
+                .count();
+
+        assertThat(notEmptyCount).isEqualTo(3);
+    }
+
+    @Test
+    public void toArray() throws IOException {
+
+        List<String> list = List.of("a", "b", "c");
+        String[] array = list.toArray(String[]::new);
+
+        assertThat(array)
+                .containsExactly("a", "b", "c");
+    }
+
+    @Test
+    public void optional_isEmpty() throws IOException {
+
+        Optional<String> value = Optional.ofNullable(null);
+
+        assertThat(value.isEmpty()).isTrue();
+        assertThat(value.isPresent()).isFalse();
+    }
 }

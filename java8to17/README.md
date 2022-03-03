@@ -250,9 +250,20 @@ assertThat(" ".isBlank()).isTrue();
 assertThat("\n\t\u3000".isBlank()).isTrue();
 ```
 
+### ▲ String#lines の追加
+
+`String#lines` で行ごとの文字列の`Stream`を取得できるようになりました。
+
+```java
+String text = "a\nb\r\nc";
+long lineCount = text.lines().count();
+
+assertThat(lineCount).isEqualTo(3);
+```
+
 ### ★ Path.of の追加
 
-`Paths.get`だったのが、`Path.of` で書けるようになりました。他の作法と合わせたような感じでしょうか。
+`Paths.get`だったのが、`Path.of` で書けるようになりました。他の作法と合わせたような感じです。
 
 ```java
 Path path1 = Paths.get("dir");
@@ -274,6 +285,38 @@ String text = Files.readString(filePath, StandardCharsets.UTF_8);
 assertThat(text).isEqualTo("あいうえお");
 ```
 
+### ★ Predicate.not の追加
+
+`Predicate.not`で`Predicate`を反転させられるようになりました。反転のためにメソッド参照を諦めていたような場所でメソッド参照が使えるようになります。
+
+```java
+long notEmptyCount = Stream.of("", "x", "", "x", "x")
+        .filter(Predicate.not(String::isEmpty))
+        .count();
+
+assertThat(notEmptyCount).isEqualTo(3);
+```
+
+### ▲ Collection#toArray(IntFunction<T[]> generator) の追加
+
+`Collection#toArray`で引数に配列をnewする関数を指定できるようになりました。  
+以前は配列を生成して渡していた(`new String[0]`とか)のが、コンストラクタをメソッド参照で指定できるようになった感じです。
+
+```java
+List<String> list = List.of("a", "b", "c");
+String[] array = list.toArray(String[]::new);
+```
+
+### ▲ Optional#isEmpty の追加
+
+`Optional`に`isEmpty`が追加されました。`isPresent`の逆になります。
+
+```java
+Optional<String> value = Optional.ofNullable(null);
+
+assertThat(value.isEmpty()).isTrue();
+assertThat(value.isPresent()).isFalse();
+```
 
 ## 参考
 
