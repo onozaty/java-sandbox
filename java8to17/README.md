@@ -318,6 +318,37 @@ assertThat(value.isEmpty()).isTrue();
 assertThat(value.isPresent()).isFalse();
 ```
 
+## Java12
+
+* https://openjdk.java.net/projects/jdk/12/
+
+### ▲ String#indent の追加
+
+`String`の`indent`メソッドで、指定した文字数分のインデントを付けられるようになりました。
+
+```java
+String base = "1\n2\n\n";
+String indented = base.indent(2);
+
+assertThat(indented).isEqualTo("  1\n  2\n  \n");
+```
+
+### ▲ String#transform の追加
+
+`String`に`transform`メソッドが追加されました。  
+`String`を引数に取るメソッドを渡すとそれを実行してその結果を返します。
+
+```java
+int num = "1".transform(Integer::parseInt);
+```
+
+メソッド呼び出し1回だと、あまりメリットを感じませんが、メソッド呼び出しが続くような場合には、読みやすくなります。
+
+```java
+int num = "12#34".transform(this::clean).transform(Integer::valueOf);
+```
+
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
