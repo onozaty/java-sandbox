@@ -348,6 +348,78 @@ int num = "1".transform(Integer::parseInt);
 int num = "12#34".transform(this::clean).transform(Integer::valueOf);
 ```
 
+## Java13
+
+* https://openjdk.java.net/projects/jdk/13/
+
+## Java14
+
+* https://openjdk.java.net/projects/jdk/14/
+
+### ★ switch式
+
+`switch`を式としても書けるようになりました。
+
+```java
+int numLetters = switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> 6;
+    case TUESDAY -> 7;
+    case THURSDAY, SATURDAY -> 8;
+    case WEDNESDAY -> 9;
+    default -> throw new IllegalStateException("Invalid day: " + day);
+};
+```
+
+上記はアロー構文を使った記述ですが、switch文同様のコロンラベル+`yield`で書く方法もあります。
+
+```java
+int numLetters = switch (day) {
+    case MONDAY:
+    case FRIDAY:
+    case SUNDAY:
+        System.out.println(6);
+        yield 6;
+    case TUESDAY:
+        System.out.println(7);
+        yield 7;
+    case THURSDAY:
+    case SATURDAY:
+        System.out.println(8);
+        yield 8;
+    case WEDNESDAY:
+        System.out.println(9);
+        yield 9;
+    default:
+        throw new IllegalStateException("Invalid day: " + day);
+};
+```
+
+アロー構文でも複数の式が必要な場合は、ブロック＋`yield`を使います。
+
+```java
+int numLetters = switch (day) {
+    case MONDAY, FRIDAY, SUNDAY -> {
+        System.out.println(6);
+        yield 6;
+    }
+    case TUESDAY -> {
+        System.out.println(7);
+        yield 7;
+    }
+    case THURSDAY, SATURDAY -> {
+        System.out.println(8);
+        yield 8;
+    }
+    case WEDNESDAY -> {
+        System.out.println(9);
+        yield 9;
+    }
+    default -> throw new IllegalStateException("Invalid day: " + day);
+};
+```
+
+* 参考: https://docs.oracle.com/javase/jp/13/language/switch-expressions.html
+
 
 ## 参考
 
