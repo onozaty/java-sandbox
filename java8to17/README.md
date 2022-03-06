@@ -418,8 +418,33 @@ int numLetters = switch (day) {
 };
 ```
 
+アロー構文は`break`を忘れて意図せずフォールスルーすることが無いので、アロー構文を使った方がよさそうです。
+
 * 参考: https://docs.oracle.com/javase/jp/13/language/switch-expressions.html
 
+### ★ switchの複数ラベル
+
+`switch`のラベルをカンマ区切りで複数書けるようになりました。  
+`switch`式だけでなく、既存の`switch`文でも利用できます。
+
+```java
+switch (day) {
+    case MONDAY, FRIDAY, SUNDAY:
+        System.out.println(6);
+        break;
+    case TUESDAY:
+        System.out.println(7);
+        break;
+    case THURSDAY, SATURDAY:
+        System.out.println(8);
+        break;
+    case WEDNESDAY:
+        System.out.println(9);
+        break;
+    default:
+        throw new IllegalStateException("Invalid day: " + day);
+}
+```
 
 ## 参考
 

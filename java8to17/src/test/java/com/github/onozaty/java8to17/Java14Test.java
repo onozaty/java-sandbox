@@ -50,4 +50,28 @@ public class Java14Test {
             assertThat(numLetters).isEqualTo(9);
         }
     }
+
+    @Test
+    public void switch_複数ラベル() {
+
+        {
+            Day day = Day.WEDNESDAY;
+            switch (day) {
+                case MONDAY, FRIDAY, SUNDAY:
+                    System.out.println(6);
+                    break;
+                case TUESDAY:
+                    System.out.println(7);
+                    break;
+                case THURSDAY, SATURDAY:
+                    System.out.println(8);
+                    break;
+                case WEDNESDAY:
+                    System.out.println(9);
+                    break;
+                default:
+                    throw new IllegalStateException("Invalid day: " + day);
+            }
+        }
+    }
 }
