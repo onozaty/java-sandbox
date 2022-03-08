@@ -446,6 +446,61 @@ switch (day) {
 }
 ```
 
+## Java15
+
+* https://openjdk.java.net/projects/jdk/15/
+
+### ★ テキストブロック
+
+複数行にまたがる文字列を宣言できます。`"""`で囲んで書きます。
+
+```java
+String text = """
+        1行目
+        2行目
+        """;
+
+assertThat(text)
+        .isEqualTo("1行目\n2行目\n");
+```
+
+インデントは一番浅い位置が基準になります。
+
+```java
+String text = """
+        1行目
+          2行目(インデント)
+        """;
+
+assertThat(text)
+        .isEqualTo("1行目\n  2行目(インデント)\n");
+```
+
+末尾のスペースは自動的に除去されます。 
+スペースを付与したい場合には`\s`を利用します。末尾に付与すれば、それより前のスペースも含めて維持されます。
+
+```java
+String text = """
+        1行目 \s
+        2行目\s
+        """;
+
+assertThat(text)
+        .isEqualTo("1行目  \n2行目 \n");
+```
+
+改行を付与したくない場合には、末尾に`\`を付与します。
+
+```java
+String text = """
+        1行目\
+        2行目\
+        """;
+
+assertThat(text)
+        .isEqualTo("1行目2行目");
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
