@@ -501,6 +501,48 @@ assertThat(text)
         .isEqualTo("1行目2行目");
 ```
 
+### ▲ String#formatted、stripIndent、translateEscapes
+
+`String`クラスのインスタンスメソッドとして、`formatted`、`stripIndent`、`translateEscapes` が追加されました。  
+テキストブロックに関連しての追加のようです。
+
+`formatted`メソッドは、今まで`String.format`で呼び出していたものを、`String`のインスタンスメソッドとして呼び出せるようにしたものです。
+
+```java
+String formatText = "%,d円です。";
+String text = formatText.formatted(1234);
+
+assertThat(text).isEqualTo("1,234円です。");
+```
+
+テキストブロックでは変数埋め込みが出来ませんが、`formatted`メソッドを使うことで、下記のように書くことが出来ます。
+
+```java
+String text = """
+        %sさん。
+        金額は%,d円です。
+        """.formatted("太郎", 1234);
+
+assertThat(text).isEqualTo("太郎さん。\n金額は1,234円です。\n");
+```
+
+`stripIndent`は複数行の文字列から、一番浅いインデント分の空白を取り除きます。
+
+```java
+String text = " 1\n  2\n   3";
+
+assertThat(text.stripIndent()).isEqualTo("1\n 2\n  3");
+```
+
+`translateEscapes`はエスケープシーケンスを変換します。  
+たとえば、`\n`という2文字をU+000Aに変換してくれます。
+
+```java
+String text = "a\\n\\tb";
+
+assertThat(text.translateEscapes()).isEqualTo("a\n\tb");
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
