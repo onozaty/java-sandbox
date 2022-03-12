@@ -543,6 +543,22 @@ String text = "a\\n\\tb";
 assertThat(text.translateEscapes()).isEqualTo("a\n\tb");
 ```
 
+## Java16
+
+* https://openjdk.java.net/projects/jdk/16/
+
+### ★ パターンマッチングinstanceof
+
+`instanceof` で型をチェックするのと同時に、その型の変数を定義できるようになりました。
+
+```java
+Object value = 10;
+
+if (value instanceof Integer num) {
+    assertThat(num).isEqualTo(10);
+}
+```
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
