@@ -559,6 +559,59 @@ if (value instanceof Integer num) {
 }
 ```
 
+### ★ レコード
+
+不変なデータを保持するクラスを簡単に定義できるようになりました。
+
+`class`の代わりに`record`で定義します。  
+名前の後に、フィールドのリスト(コンポーネントと呼ばれます)を記載します。
+
+```java
+public record Rectangle(int length, int width) {
+}
+```
+
+`class`と同じく`new`でインスタンスを生成します。
+
+```java
+Rectangle rectangle = new Rectangle(1, 2);
+```
+
+`record`には、下記メソッドが自動的に定義されます。
+
+* フィールド参照用のアクセサ
+* `equals`
+* `hashCode`
+* `toString`
+
+```java
+assertThat(rectangle.length())
+        .isEqualTo(1);
+assertThat(rectangle.width())
+        .isEqualTo(2);
+assertThat(rectangle.toString())
+        .isEqualTo("Rectangle[length=1, width=2]");
+
+Rectangle other = new Rectangle(1, 2);
+assertThat(rectangle.hashCode())
+        .isEqualTo(other.hashCode());
+assertThat(rectangle.equals(other))
+        .isTrue();
+```
+
+独自メソッドも宣言できます。
+
+```java
+public record Rectangle(int length, int width) {
+
+    public int area() {
+        return length * width;
+    }
+}
+```
+
+* https://docs.oracle.com/javase/jp/16/language/records.html
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)

@@ -17,4 +17,27 @@ public class Java16Test {
             fail();
         }
     }
+
+    @Test
+    public void record() {
+
+        Rectangle rectangle = new Rectangle(1, 2);
+
+        assertThat(rectangle.length())
+                .isEqualTo(1);
+        assertThat(rectangle.width())
+                .isEqualTo(2);
+        assertThat(rectangle.toString())
+                .isEqualTo("Rectangle[length=1, width=2]");
+
+        Rectangle other = new Rectangle(1, 2);
+
+        assertThat(rectangle.hashCode())
+                .isEqualTo(other.hashCode());
+        assertThat(rectangle.equals(other))
+                .isTrue();
+
+        assertThat(rectangle.area()).isEqualTo(2);
+    }
+
 }
