@@ -1,7 +1,11 @@
 package com.github.onozaty.java8to17;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.fail;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -40,4 +44,19 @@ public class Java16Test {
         assertThat(rectangle.area()).isEqualTo(2);
     }
 
+    @Test
+    public void stream_toList() {
+
+        List<String> list = Stream.of("a", "b").toList();
+
+        assertThat(list)
+                .containsExactly("a", "b");
+
+        assertThatThrownBy(() -> {
+
+            list.set(0, "x");
+
+        }).isInstanceOf(UnsupportedOperationException.class);
+
+    }
 }

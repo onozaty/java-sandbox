@@ -612,6 +612,22 @@ public record Rectangle(int length, int width) {
 
 * https://docs.oracle.com/javase/jp/16/language/records.html
 
+### ★ Stream#toList
+
+`Stream`に`toList`メソッドが追加されました。  
+`collect(Collectos.toList())`で書いていた箇所が、もう少しすっきりとした形で書けるようになります。
+
+```java
+List<String> list = Stream.of("a", "b").toList();
+```
+
+`Stream`の`toList`は不変なリストを返します。そのため、そのリストに対して追加/削除/変更を行うと、`UnsuptorpedOperationException`が発生します。  
+`Collectors.toList`で返すリストは、実装としては`ArrayList`になっているため、追加/削除/変更は出来ていました。そのため、`Collectors.toList`に置き換えると問題が出る箇所もありえるので注意が必要です。
+
+なお、Java10で`Collectors.toUnmodifiableList`が追加されており、こちらも不変なリストを返すものになっています。
+
+
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
