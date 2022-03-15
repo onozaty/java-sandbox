@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -57,6 +58,23 @@ public class Java16Test {
             list.set(0, "x");
 
         }).isInstanceOf(UnsupportedOperationException.class);
+
+    }
+
+    @Test
+    public void stream_mapMulti() {
+
+        List<String> upperChars =
+                Stream.of("abc", "xyz")
+                        .mapMulti((String str, Consumer<String> consumer) -> {
+                            for (char c : str.toCharArray()) {
+                                consumer.accept(String.valueOf(c).toUpperCase());
+                            }
+                        })
+                        .toList();
+
+        assertThat(upperChars)
+                .containsExactly("A", "B", "C", "X", "Y", "Z");
 
     }
 }

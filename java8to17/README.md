@@ -626,11 +626,27 @@ List<String> list = Stream.of("a", "b").toList();
 
 なお、Java10で`Collectors.toUnmodifiableList`が追加されており、こちらも不変なリストを返すものになっています。
 
+### ▲ Stream#mapMulti
 
+`flatMap`と似たようなメソッドとして`mapMulti`が追加されました。  
+`flatMap`が`Stream`を返すのに対して、`mapMulti`は渡された`Consumer`に対して値を設定していく形となります。
+
+```java
+List<String> upperChars =
+        Stream.of("abc", "xyz")
+                .mapMulti((String str, Consumer<String> consumer) -> {
+                    for (char c : str.toCharArray()) {
+                        consumer.accept(String.valueOf(c).toUpperCase());
+                    }
+                })
+                .toList();
+
+assertThat(upperChars)
+        .containsExactly("A", "B", "C", "X", "Y", "Z");
+```
 
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
-* [開発者が喜ぶJDK 9の9つの新機能 - Oracle](https://www.oracle.com/webfolder/technetwork/jp/javamagazine/Java-JA17-Java9Features.pdf)
-* [Java 9~17の新機能 / Java 9 ~ 17 Overview \- Speaker Deck](https://speakerdeck.com/maruta/java-9-17-overview?slide=2)
+* [Java 9~17の新機能 / Java 9 ~ 17 Overview \- Speaker Deck](https://speakerdeck.com/maruta/java-9-17-overview)
 * [Javaのスペシャリストが教える、Java9からJava14で細かく変更された機能 \- ログミーTech](https://logmi.jp/tech/articles/323178)
