@@ -645,6 +645,13 @@ assertThat(upperChars)
         .containsExactly("A", "B", "C", "X", "Y", "Z");
 ```
 
+## その他
+
+* Helpful NullPointerException  
+`NullPointerException`のメッセージがわかりやすく
+* モジュールシステム  
+標準ライブラリがモジュールになっており、内部的なクラスを参照していた箇所は、コンパイルエラーとなる場合がある
+
 ## 参考
 
 * [Java新機能メモ\(Hishidama's Java up\-to\-date\)](https://www.ne.jp/asahi/hishidama/home/tech/java/uptodate.html)
