@@ -1,15 +1,11 @@
 package com.github.onozaty.df;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Value;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
+@Value
 public class DocumentFrequency {
 
     private final String term;
 
-    private int count;
+    private final long count;
 }
