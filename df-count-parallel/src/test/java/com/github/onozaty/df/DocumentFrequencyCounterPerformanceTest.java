@@ -35,6 +35,18 @@ public class DocumentFrequencyCounterPerformanceTest {
                 .isNotEmpty();
     }
 
+    @Test
+    public void countParallelForEach() throws IOException {
+
+        List<Path> textFilePaths = getTextFilePaths();
+
+        List<DocumentFrequency> documentFrequencies =
+                new DocumentFrequencyCounter().countParallelForEach(textFilePaths);
+
+        assertThat(documentFrequencies)
+                .isNotEmpty();
+    }
+
     private List<Path> getTextFilePaths() throws IOException {
 
         String targetDirPath = ""; // テストデータとなるテキストファイルが配置されたディレクトリを指定

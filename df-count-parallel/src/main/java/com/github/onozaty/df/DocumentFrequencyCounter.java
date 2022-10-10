@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.atilika.kuromoji.ipadic.Token;
@@ -36,6 +37,30 @@ public class DocumentFrequencyCounter {
                 .map(this::tokenizeNouns)
                 .flatMap(Set::stream)
                 .collect(Collectors.groupingBy(x -> x, Collectors.counting()));
+
+        return dfMap.entrySet().stream()
+                .map(x -> new DocumentFrequency(x.getKey(), x.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    public List<DocumentFrequency> countParallelForEach(List<Path> textFilePaths) {
+
+        ConcurrentHashMap<String, Integer> dfMap = new ConcurrentHashMap<>();
+
+        textFilePaths.stream()
+                .parallel()
+                .forEach(textFilePath -> {
+
+                    Set<String> nouns = tokenizeNouns(textFilePath);
+                    for (String noun : nouns) {
+                        dfMap.compute(noun, (key, count) -> {
+                            if (count == null) {
+                                return 1;
+                            }
+                            return ++count;
+                        });
+                    }
+                });
 
         return dfMap.entrySet().stream()
                 .map(x -> new DocumentFrequency(x.getKey(), x.getValue()))
