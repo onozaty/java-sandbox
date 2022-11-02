@@ -45,6 +45,25 @@ public class ObjectPoolingTest {
     }
 
     @Test
+    public void poolingByThreadLocal() {
+
+        // スレッド毎に別のオブジェクトを管理
+        ThreadLocal<HeavyObject> threadLocal = new ThreadLocal<>();
+
+        IntStream.range(0, 200).parallel()
+                .forEach(i -> {
+
+                    HeavyObject heavyObject = threadLocal.get();
+                    if (heavyObject == null) {
+                        heavyObject = new HeavyObject();
+                        threadLocal.set(heavyObject);
+                    }
+
+                    heavyObject.execute(i);
+                });
+    }
+
+    @Test
     public void poolingByCommonsPool() {
 
         int size = ForkJoinPool.getCommonPoolParallelism() + 1;
