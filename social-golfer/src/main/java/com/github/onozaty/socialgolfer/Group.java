@@ -19,6 +19,10 @@ public class Group implements Comparable<Group> {
         this(IntStream.of(members).mapToObj(Integer::valueOf).toList());
     }
 
+    public boolean hasMember(int member) {
+        return members.contains(member);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(members);

@@ -1,36 +1,61 @@
 package com.github.onozaty.socialgolfer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 public class RoundGenerator {
 
-    public static List<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {
+    public static TreeSet<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {
 
         int totalMemberCount = groupCount * memberCountInGroup;
 
-        List<Integer> members = IntStream.rangeClosed(1, totalMemberCount)
+        List<Integer> candidateMembers = IntStream.rangeClosed(1, totalMemberCount)
                 .mapToObj(Integer::valueOf)
                 .toList();
 
-        List<Group> allPatternGroups = generateAllPatternGroups(members, memberCountInGroup);
-
-        return null;
+        return generateRounds(Collections.emptyList(), candidateMembers, memberCountInGroup);
     }
 
-    public static List<Group> generateAllPatternGroups(List<Integer> candidateMembers, int memberCountInGroup) {
-        return generateGroups(List.of(), candidateMembers, memberCountInGroup);
+    public static TreeSet<Round> generateRounds(List<Group> currentGroups, List<Integer> candidateMembers,
+            int memberCountInGroup) {
+
+        if (candidateMembers.size() == 0) {
+            return new TreeSet<>(List.of(new Round(currentGroups)));
+        }
+
+        TreeSet<Round> rounds = new TreeSet<>();
+
+        for (Group group : generateAllPatternGroups(candidateMembers, memberCountInGroup)) {
+
+            List<Group> nextGroups = new ArrayList<>(currentGroups);
+            nextGroups.add(group);
+
+            List<Integer> nextCandidateMembers = candidateMembers.stream()
+                    .filter(Predicate.not(group::hasMember))
+                    .toList();
+
+            rounds.addAll(generateRounds(nextGroups, nextCandidateMembers, memberCountInGroup));
+        }
+
+        return rounds;
     }
 
-    private static List<Group> generateGroups(
+    public static TreeSet<Group> generateAllPatternGroups(List<Integer> candidateMembers, int memberCountInGroup) {
+        return generateGroups(Collections.emptyList(), candidateMembers, memberCountInGroup);
+    }
+
+    private static TreeSet<Group> generateGroups(
             List<Integer> currentGroupMembers, List<Integer> candidateMembers, int memberCountInGroup) {
 
         if (currentGroupMembers.size() == memberCountInGroup) {
-            return List.of(new Group(currentGroupMembers));
+            return new TreeSet<>(List.of(new Group(currentGroupMembers)));
         }
 
-        List<Group> groups = new ArrayList<>();
+        TreeSet<Group> groups = new TreeSet<>();
 
         for (int i = 0; i < candidateMembers.size(); i++) {
 
