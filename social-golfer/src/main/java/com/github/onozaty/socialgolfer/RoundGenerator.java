@@ -2,6 +2,7 @@ package com.github.onozaty.socialgolfer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -17,11 +18,11 @@ public class RoundGenerator {
                 .mapToObj(Integer::valueOf)
                 .toList();
 
-        return generateRounds(Collections.emptyList(), candidateMembers, memberCountInGroup);
+        return generateRounds(Collections.emptyList(), candidateMembers, memberCountInGroup, new HashSet<>());
     }
 
-    public static TreeSet<Round> generateRounds(List<Group> currentGroups, List<Integer> candidateMembers,
-            int memberCountInGroup) {
+    private static TreeSet<Round> generateRounds(List<Group> currentGroups, List<Integer> candidateMembers,
+            int memberCountInGroup, HashSet<Group> patternCompletedGroups) {
 
         if (candidateMembers.size() == 0) {
             return new TreeSet<>(List.of(new Round(currentGroups)));
@@ -31,6 +32,11 @@ public class RoundGenerator {
 
         for (Group group : generateAllPatternGroups(candidateMembers, memberCountInGroup)) {
 
+            if (patternCompletedGroups.contains(group)) {
+                // 既に全パターンが終わっているグループは対象外
+                continue;
+            }
+
             List<Group> nextGroups = new ArrayList<>(currentGroups);
             nextGroups.add(group);
 
@@ -38,7 +44,12 @@ public class RoundGenerator {
                     .filter(Predicate.not(group::hasMember))
                     .toList();
 
-            rounds.addAll(generateRounds(nextGroups, nextCandidateMembers, memberCountInGroup));
+            rounds.addAll(generateRounds(nextGroups, nextCandidateMembers, memberCountInGroup, patternCompletedGroups));
+
+            if (currentGroups.isEmpty()) {
+                // 先頭のグループに対する処理の場合、全パターン処理済みのグループとして保存
+                patternCompletedGroups.add(group);
+            }
         }
 
         return rounds;

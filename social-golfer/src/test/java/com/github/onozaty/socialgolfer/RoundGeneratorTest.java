@@ -14,8 +14,10 @@ public class RoundGeneratorTest {
     public void generateAllPatternGroups() {
 
         // 12名の中から3名をピックアップ(12C3 -> 220)
-        List<Integer> candidateMembers = IntStream.rangeClosed(1, 12).mapToObj(Integer::valueOf).toList();
+        int groupCount = 4;
         int memberCountInGroup = 3;
+        int totalMemberCount = groupCount * memberCountInGroup;
+        List<Integer> candidateMembers = IntStream.rangeClosed(1, totalMemberCount).mapToObj(Integer::valueOf).toList();
 
         TreeSet<Group> groups = RoundGenerator.generateAllPatternGroups(candidateMembers, memberCountInGroup);
 
