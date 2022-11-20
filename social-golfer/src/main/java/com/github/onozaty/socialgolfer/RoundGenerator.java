@@ -4,33 +4,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.TreeSet;
-import java.util.function.Predicate;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 public class RoundGenerator {
 
-    public static TreeSet<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {
+    public static Set<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {
 
         int totalMemberCount = groupCount * memberCountInGroup;
-
         List<Integer> candidateMembers = IntStream.rangeClosed(1, totalMemberCount)
                 .mapToObj(Integer::valueOf)
                 .toList();
 
-        return generateRounds(Collections.emptyList(), candidateMembers, memberCountInGroup, new HashSet<>());
+        Set<Group> candidateGroups = generateAllPatternGroups(candidateMembers, memberCountInGroup);
+
+        return generateRounds(
+                Collections.emptyList(),
+                candidateGroups.stream().toList(),
+                groupCount,
+                new HashSet<>());
     }
 
-    private static TreeSet<Round> generateRounds(List<Group> currentGroups, List<Integer> candidateMembers,
-            int memberCountInGroup, HashSet<Group> patternCompletedGroups) {
+    private static Set<Round> generateRounds(List<Group> currentGroups, List<Group> candidateGroups,
+            int groupCount, HashSet<Group> patternCompletedGroups) {
 
-        if (candidateMembers.size() == 0) {
-            return new TreeSet<>(List.of(new Round(currentGroups)));
+        if (currentGroups.size() == groupCount) {
+            return Set.of(new Round(currentGroups));
         }
 
-        TreeSet<Round> rounds = new TreeSet<>();
+        HashSet<Round> rounds = new HashSet<>();
 
-        for (Group group : generateAllPatternGroups(candidateMembers, memberCountInGroup)) {
+        for (Group group : candidateGroups) {
 
             if (patternCompletedGroups.contains(group)) {
                 // 既に全パターンが終わっているグループは対象外
@@ -40,11 +44,12 @@ public class RoundGenerator {
             List<Group> nextGroups = new ArrayList<>(currentGroups);
             nextGroups.add(group);
 
-            List<Integer> nextCandidateMembers = candidateMembers.stream()
-                    .filter(Predicate.not(group::hasMember))
+            List<Group> nextCandidateGroups = candidateGroups.stream()
+                    .filter(x -> x.notContainsAll(group))
                     .toList();
 
-            rounds.addAll(generateRounds(nextGroups, nextCandidateMembers, memberCountInGroup, patternCompletedGroups));
+            rounds.addAll(
+                    generateRounds(nextGroups, nextCandidateGroups, groupCount, patternCompletedGroups));
 
             if (currentGroups.isEmpty()) {
                 // 先頭のグループに対する処理の場合、全パターン処理済みのグループとして保存
@@ -55,18 +60,18 @@ public class RoundGenerator {
         return rounds;
     }
 
-    public static TreeSet<Group> generateAllPatternGroups(List<Integer> candidateMembers, int memberCountInGroup) {
+    public static Set<Group> generateAllPatternGroups(List<Integer> candidateMembers, int memberCountInGroup) {
         return generateGroups(Collections.emptyList(), candidateMembers, memberCountInGroup);
     }
 
-    private static TreeSet<Group> generateGroups(
+    private static Set<Group> generateGroups(
             List<Integer> currentGroupMembers, List<Integer> candidateMembers, int memberCountInGroup) {
 
         if (currentGroupMembers.size() == memberCountInGroup) {
-            return new TreeSet<>(List.of(new Group(currentGroupMembers)));
+            return Set.of(new Group(currentGroupMembers));
         }
 
-        TreeSet<Group> groups = new TreeSet<>();
+        HashSet<Group> groups = new HashSet<>();
 
         for (int i = 0; i < candidateMembers.size(); i++) {
 
@@ -82,5 +87,4 @@ public class RoundGenerator {
 
         return groups;
     }
-
 }

@@ -3,7 +3,7 @@ package com.github.onozaty.socialgolfer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ public class RoundGeneratorTest {
         int totalMemberCount = groupCount * memberCountInGroup;
         List<Integer> candidateMembers = IntStream.rangeClosed(1, totalMemberCount).mapToObj(Integer::valueOf).toList();
 
-        TreeSet<Group> groups = RoundGenerator.generateAllPatternGroups(candidateMembers, memberCountInGroup);
+        Set<Group> groups = RoundGenerator.generateAllPatternGroups(candidateMembers, memberCountInGroup);
 
         assertThat(groups).hasSize(220);
     }
@@ -33,7 +33,7 @@ public class RoundGeneratorTest {
         int groupCount = 3;
         int memberCountInGroup = 4;
 
-        TreeSet<Round> rounds = RoundGenerator.generateAllPatternRounds(groupCount, memberCountInGroup);
+        Set<Round> rounds = RoundGenerator.generateAllPatternRounds(groupCount, memberCountInGroup);
 
         assertThat(rounds).hasSize(5775);
     }

@@ -19,8 +19,22 @@ public class Group implements Comparable<Group> {
         this(IntStream.of(members).mapToObj(Integer::valueOf).toList());
     }
 
-    public boolean hasMember(int member) {
+    public boolean contains(int member) {
         return members.contains(member);
+    }
+
+    public boolean containsAny(Group other) {
+        for (Integer member : members) {
+            if (other.contains(member)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean notContainsAll(Group other) {
+        return !containsAny(other);
     }
 
     @Override
