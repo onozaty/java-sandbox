@@ -19,6 +19,10 @@ public class Round implements Comparable<Round> {
         this(Stream.of(groups).toList());
     }
 
+    public TreeSet<Group> getGroups() {
+        return groups;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(groups);

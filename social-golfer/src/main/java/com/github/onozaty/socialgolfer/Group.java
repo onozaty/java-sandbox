@@ -19,6 +19,10 @@ public class Group implements Comparable<Group> {
         this(IntStream.of(members).mapToObj(Integer::valueOf).toList());
     }
 
+    public TreeSet<Integer> getMembers() {
+        return members;
+    }
+
     public boolean contains(int member) {
         return members.contains(member);
     }
