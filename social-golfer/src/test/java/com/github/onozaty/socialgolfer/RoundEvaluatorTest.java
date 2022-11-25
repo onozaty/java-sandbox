@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +12,10 @@ public class RoundEvaluatorTest {
     @Test
     public void evaluate() {
 
-        List<Integer> members = IntStream.rangeClosed(1, 6).mapToObj(Integer::valueOf).toList();
+        int groupCount = 2;
+        int memberCountInGroup = 3;
 
-        RoundEvaluator roundEvaluator = new RoundEvaluator(members);
+        RoundEvaluator roundEvaluator = new RoundEvaluator(groupCount, memberCountInGroup);
 
         {
             List<Round> rounds = List.of(

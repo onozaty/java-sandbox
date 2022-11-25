@@ -3,6 +3,7 @@ package com.github.onozaty.socialgolfer;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -36,6 +37,19 @@ public class RoundGeneratorTest {
         Set<Round> rounds = RoundGenerator.generateAllPatternRounds(groupCount, memberCountInGroup);
 
         assertThat(rounds).hasSize(5775);
+    }
+
+    @Test
+    public void generateBestRounds() {
+
+        int groupCount = 3;
+        int memberCountInGroup = 4;
+        int rountCount = 3;
+
+        Optional<List<Round>> baseRounds =
+                RoundGenerator.generateBestRounds(groupCount, memberCountInGroup, rountCount);
+
+        assertThat(baseRounds).isPresent();
     }
 
 }

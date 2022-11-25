@@ -6,12 +6,24 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class RoundEvaluator {
 
+    private final int groupCount;
+    private final int memberCountInGroup;
+
     private final List<Pair> pairs;
 
-    public RoundEvaluator(List<Integer> members) {
+    public RoundEvaluator(int groupCount, int memberCountInGroup) {
+
+        this.groupCount = groupCount;
+        this.memberCountInGroup = memberCountInGroup;
+
+        int totalMemberCount = groupCount * memberCountInGroup;
+        List<Integer> members = IntStream.rangeClosed(1, totalMemberCount)
+                .mapToObj(Integer::valueOf)
+                .toList();
 
         ArrayList<Pair> pairs = new ArrayList<>();
 
@@ -22,6 +34,23 @@ public class RoundEvaluator {
         }
 
         this.pairs = Collections.unmodifiableList(pairs);
+    }
+
+    public boolean isBestRounds(List<Round> rounds) {
+
+        int result = evaluate(rounds);
+        int bestResult = calcBestResult(rounds.size());
+
+        return result == bestResult;
+    }
+
+    private int calcBestResult(int roundCount) {
+
+        if (((memberCountInGroup - 1) * roundCount) % ((groupCount * memberCountInGroup) - 1) == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     public int evaluate(List<Round> rounds) {

@@ -23,6 +23,24 @@ public class Round implements Comparable<Round> {
         return groups;
     }
 
+    public boolean contains(Group group) {
+        return groups.contains(group);
+    }
+
+    public boolean containsAny(Collection<Group> otherGroups) {
+        for (Group group : groups) {
+            if (otherGroups.contains(group)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean notContainsAll(Collection<Group> otherGroups) {
+        return !containsAny(otherGroups);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(groups);

@@ -27,9 +27,9 @@ public class Group implements Comparable<Group> {
         return members.contains(member);
     }
 
-    public boolean containsAny(Group other) {
+    public boolean containsAny(Collection<Integer> otherMembers) {
         for (Integer member : members) {
-            if (other.contains(member)) {
+            if (otherMembers.contains(member)) {
                 return true;
             }
         }
@@ -37,8 +37,8 @@ public class Group implements Comparable<Group> {
         return false;
     }
 
-    public boolean notContainsAll(Group other) {
-        return !containsAny(other);
+    public boolean notContainsAll(Collection<Integer> otherMembers) {
+        return !containsAny(otherMembers);
     }
 
     @Override
