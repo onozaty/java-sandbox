@@ -10,15 +10,9 @@ import java.util.stream.IntStream;
 
 public class RoundEvaluator {
 
-    private final int groupCount;
-    private final int memberCountInGroup;
-
     private final List<Pair> pairs;
 
     public RoundEvaluator(int groupCount, int memberCountInGroup) {
-
-        this.groupCount = groupCount;
-        this.memberCountInGroup = memberCountInGroup;
 
         int totalMemberCount = groupCount * memberCountInGroup;
         List<Integer> members = IntStream.rangeClosed(1, totalMemberCount)
@@ -36,24 +30,7 @@ public class RoundEvaluator {
         this.pairs = Collections.unmodifiableList(pairs);
     }
 
-    public boolean isBestRounds(List<Round> rounds) {
-
-        int result = evaluate(rounds);
-        int bestResult = calcBestResult(rounds.size());
-
-        return result == bestResult;
-    }
-
-    private int calcBestResult(int roundCount) {
-
-        if (((memberCountInGroup - 1) * roundCount) % ((groupCount * memberCountInGroup) - 1) == 0) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    public int evaluate(List<Round> rounds) {
+    public int evaluateScore(List<Round> rounds) {
 
         // 0でいったん初期化
         HashMap<Pair, Integer> matrix = new HashMap<>();

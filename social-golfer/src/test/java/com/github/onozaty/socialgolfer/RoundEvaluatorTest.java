@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 public class RoundEvaluatorTest {
 
     @Test
-    public void evaluate() {
+    public void evaluateScore() {
 
         int groupCount = 2;
         int memberCountInGroup = 3;
@@ -21,7 +21,7 @@ public class RoundEvaluatorTest {
             List<Round> rounds = List.of(
                     new Round(new Group(1, 2, 3), new Group(4, 5, 6)));
 
-            int value = roundEvaluator.evaluate(rounds);
+            int value = roundEvaluator.evaluateScore(rounds);
             assertThat(value).isEqualTo(1);
         }
 
@@ -30,7 +30,7 @@ public class RoundEvaluatorTest {
                     new Round(new Group(1, 2, 3), new Group(4, 5, 6)),
                     new Round(new Group(1, 2, 4), new Group(3, 5, 6)));
 
-            int value = roundEvaluator.evaluate(rounds);
+            int value = roundEvaluator.evaluateScore(rounds);
             assertThat(value).isEqualTo(2);
         }
 
@@ -38,7 +38,7 @@ public class RoundEvaluatorTest {
             // 全パターンを当てれば、全て同じマッチ回数になるはず
             Set<Round> allRounds = RoundGenerator.generateAllPatternRounds(2, 3);
 
-            int value = roundEvaluator.evaluate(allRounds.stream().toList());
+            int value = roundEvaluator.evaluateScore(allRounds.stream().toList());
             assertThat(value).isEqualTo(0);
         }
     }

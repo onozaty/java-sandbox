@@ -4,53 +4,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 public class RoundGenerator {
 
-    public static Optional<List<Round>> generateBestRounds(int groupCount, int memberCountInGroup, int roundCount) {
+    public static EvaluatedRounds generateBestRounds(int groupCount, int memberCountInGroup, int roundCount) {
 
+        RoundEvaluator roundEvaluator = new RoundEvaluator(groupCount, memberCountInGroup);
         List<Round> allPatternRounds = generateAllPatternRounds(groupCount, memberCountInGroup).stream().toList();
-        // 1回目は何でも良いので先頭を利用
-        Round firstRound = allPatternRounds.get(0);
-        List<Round> nextCandidateRounds = allPatternRounds.stream()
-                .filter(x -> x.notContainsAll(firstRound.getGroups()))
-                .toList();
+        List<EvaluatedRounds> evaluatedRoundsList = List.of(new EvaluatedRounds(0, Collections.emptyList()));
 
-        return generateBestRounds(
-                List.of(firstRound),
-                nextCandidateRounds,
-                roundCount,
-                new RoundEvaluator(groupCount, memberCountInGroup));
+        for (int i = 0; i < roundCount; i++) {
+
+            evaluatedRoundsList = evaluatedRoundsList.stream()
+                    .flatMap(evaluatedRounds -> generateNextRounds(evaluatedRounds, allPatternRounds, roundEvaluator)
+                            .stream())
+                    .sorted()
+                    .limit(100)
+                    .toList();
+        }
+
+        return evaluatedRoundsList.stream()
+                .sorted()
+                .findFirst().get();
     }
 
-    private static Optional<List<Round>> generateBestRounds(
-            List<Round> currentRounds, List<Round> candidateRounds, int roundCount, RoundEvaluator roundEvaluator) {
+    private static List<EvaluatedRounds> generateNextRounds(
+            EvaluatedRounds current, List<Round> allPatternRounds, RoundEvaluator roundEvaluator) {
 
-        if (currentRounds.size() == roundCount) {
-            return Optional.of(currentRounds);
-        }
+        List<Round> candidateRounds = allPatternRounds.stream()
+                .filter(x -> x.notContainsAll(current.getGroups()))
+                .toList();
 
         return candidateRounds.parallelStream()
                 .map(round -> {
-                    List<Round> nextRounds = new ArrayList<>(currentRounds);
+                    List<Round> nextRounds = new ArrayList<>(current.getRounds());
                     nextRounds.add(round);
 
-                    if (!roundEvaluator.isBestRounds(nextRounds)) {
-                        return Optional.<List<Round>> empty();
-                    }
-
-                    List<Round> nextCandidateRounds = candidateRounds.stream()
-                            .filter(x -> x.notContainsAll(round.getGroups()))
-                            .toList();
-
-                    return generateBestRounds(nextRounds, nextCandidateRounds, roundCount, roundEvaluator);
+                    int score = roundEvaluator.evaluateScore(nextRounds);
+                    return new EvaluatedRounds(score, nextRounds);
                 })
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst();
+                .toList();
     }
 
     public static Set<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {
