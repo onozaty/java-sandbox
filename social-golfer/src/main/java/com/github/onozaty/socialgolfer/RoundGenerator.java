@@ -2,6 +2,7 @@ package com.github.onozaty.socialgolfer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,17 +13,44 @@ public class RoundGenerator {
     public static EvaluatedRounds generateBestRounds(int groupCount, int memberCountInGroup, int roundCount) {
 
         RoundEvaluator roundEvaluator = new RoundEvaluator(groupCount, memberCountInGroup);
-        List<Round> allPatternRounds = generateAllPatternRounds(groupCount, memberCountInGroup).stream().toList();
-        List<EvaluatedRounds> evaluatedRoundsList = List.of(new EvaluatedRounds(0, Collections.emptyList()));
+        List<Round> allPatternRounds = generateAllPatternRounds(groupCount, memberCountInGroup).stream()
+                .sorted()
+                .toList();
 
-        for (int i = 0; i < roundCount; i++) {
+        // 1つめは何でも良いので、先頭を利用
+        List<EvaluatedRounds> evaluatedRoundsList = List.of(
+                evaluate(roundEvaluator, List.of(allPatternRounds.get(0))));
 
-            evaluatedRoundsList = evaluatedRoundsList.stream()
+        for (int roundNumber = 1; roundNumber < roundCount; roundNumber++) {
+
+            evaluatedRoundsList = evaluatedRoundsList.parallelStream()
                     .flatMap(evaluatedRounds -> generateNextRounds(evaluatedRounds, allPatternRounds, roundEvaluator)
-                            .stream())
-                    .sorted()
-                    .limit(100)
+                            .stream()
+                            .sorted()
+                            .limit(100))
                     .toList();
+
+            double topScore = evaluatedRoundsList.stream()
+                    .map(x -> x.getResult().getScore())
+                    .min(Comparator.naturalOrder())
+                    .get();
+
+            List<EvaluatedRounds> topScoreEvaluatedRoundsList = evaluatedRoundsList.stream()
+                    .filter(x -> x.getResult().getScore() == topScore)
+                    .sorted()
+                    .toList();
+
+            // 一定間隔で2000件取り出す
+            int interval = topScoreEvaluatedRoundsList.size() / 2000;
+            if (interval == 0) {
+                interval = 1;
+            }
+
+            evaluatedRoundsList = new ArrayList<>();
+
+            for (int i = 0; i < topScoreEvaluatedRoundsList.size(); i += interval) {
+                evaluatedRoundsList.add(topScoreEvaluatedRoundsList.get(i));
+            }
         }
 
         return evaluatedRoundsList.stream()
@@ -42,10 +70,14 @@ public class RoundGenerator {
                     List<Round> nextRounds = new ArrayList<>(current.getRounds());
                     nextRounds.add(round);
 
-                    int score = roundEvaluator.evaluateScore(nextRounds);
-                    return new EvaluatedRounds(score, nextRounds);
+                    return evaluate(roundEvaluator, nextRounds);
                 })
                 .toList();
+    }
+
+    private static EvaluatedRounds evaluate(RoundEvaluator roundEvaluator, List<Round> rounds) {
+        EvaluateResult result = roundEvaluator.evaluate(rounds);
+        return new EvaluatedRounds(result, rounds);
     }
 
     public static Set<Round> generateAllPatternRounds(int groupCount, int memberCountInGroup) {

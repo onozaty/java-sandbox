@@ -43,12 +43,13 @@ public class RoundGeneratorTest {
 
         int groupCount = 3;
         int memberCountInGroup = 4;
-        int rountCount = 4;
+        int rountCount = 8;
 
         EvaluatedRounds bestRoundsWithScore =
                 RoundGenerator.generateBestRounds(groupCount, memberCountInGroup, rountCount);
 
-        assertThat(bestRoundsWithScore.getScore()).isEqualTo(1);
+        System.out.println(bestRoundsWithScore);
+        assertThat(bestRoundsWithScore.getResult().getScore()).isEqualTo(1);
     }
 
 }

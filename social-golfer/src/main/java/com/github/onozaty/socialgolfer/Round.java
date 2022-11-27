@@ -65,9 +65,9 @@ public class Round implements Comparable<Round> {
 
     @Override
     public String toString() {
-        return groups.stream()
+        return "{" + groups.stream()
                 .map(Group::toString)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(", ")) + "}";
     }
 
     @Override
