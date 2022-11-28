@@ -2,7 +2,6 @@ package com.github.onozaty.socialgolfer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,29 +27,9 @@ public class RoundGenerator {
                             .stream()
                             .sorted()
                             .limit(100))
-                    .toList();
-
-            double topScore = evaluatedRoundsList.stream()
-                    .map(x -> x.getResult().getScore())
-                    .min(Comparator.naturalOrder())
-                    .get();
-
-            List<EvaluatedRounds> topScoreEvaluatedRoundsList = evaluatedRoundsList.stream()
-                    .filter(x -> x.getResult().getScore() == topScore)
                     .sorted()
+                    .limit(1000) // 1000件を次へ
                     .toList();
-
-            // 一定間隔で2000件取り出す
-            int interval = topScoreEvaluatedRoundsList.size() / 2000;
-            if (interval == 0) {
-                interval = 1;
-            }
-
-            evaluatedRoundsList = new ArrayList<>();
-
-            for (int i = 0; i < topScoreEvaluatedRoundsList.size(); i += interval) {
-                evaluatedRoundsList.add(topScoreEvaluatedRoundsList.get(i));
-            }
         }
 
         return evaluatedRoundsList.stream()
