@@ -1,0 +1,10 @@
+{
+    "java.format.settings.url": ".vscode/eclipse-java-google-style-customized.xml",
+    "[java]": {
+        "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "java.inlayHints.parameterNames.enabled": "none"
+}
