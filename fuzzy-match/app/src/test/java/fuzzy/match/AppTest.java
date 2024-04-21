@@ -1,6 +1,5 @@
 package fuzzy.match;
 
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
@@ -9,7 +8,7 @@ class AppTest {
     @Test
     void test() {
 
-        List<String> names = Arrays.asList(
+        List<String> names = List.of(
                 "cat", "catalog", "apple", "people", "Google", "Google Map", "Gmail",
                 "Google Meets");
 
@@ -24,13 +23,15 @@ class AppTest {
         System.out.println(FuzzySearch.extractOne("Ｇｏｏｇｌｅ", names));
         // -> (string: Google Map, score: 9, index: 5)
 
-        // 数文字違いはスペルミス的なものは似たものとして判断
+        // 数文字違いは似たものとして判断
         System.out.println(FuzzySearch.extractOne("gogle", names));
         // -> (string: Google, score: 91, index: 4)
         System.out.println(FuzzySearch.extractOne("gooogle", names));
         // -> (string: Google, score: 92, index: 4)
         System.out.println(FuzzySearch.extractOne("googke", names));
         // -> (string: Google, score: 83, index: 4)
+        System.out.println(FuzzySearch.extractOne("foofle", names));
+        // -> (string: Google, score: 67, index: 4)
 
         System.out.println(FuzzySearch.extractSorted("google", names));
         // (string: Google, score: 100, index: 4),
